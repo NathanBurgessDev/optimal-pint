@@ -12,7 +12,7 @@ import (
 )
 
 func main() {
-	db, err := sqlx.Connect("sqlite3", "../test.db")
+	db, err := sqlx.Connect("sqlite3", "../test-final.db")
 	if err != nil {
 		log.Fatalf("Failed to connect to database: %v", err)
 	}
@@ -32,7 +32,8 @@ func main() {
 
 	pubService := service.NewService(db)
 
-	mux.HandleFunc("/🗺", pubService.AllPubs)
+	mux.HandleFunc("GET /🗺", pubService.AllPubs)
+	mux.HandleFunc("GET /🗺/{id}/🍺", pubService.AllDrinks)
 	handler := cors.Default().Handler(mux)
 	// http.HandleFunc("/🗺", pubService.AllPubs)
 
