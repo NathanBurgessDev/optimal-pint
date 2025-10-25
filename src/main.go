@@ -2,15 +2,18 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 	"optimal-pint/src/internal/service"
 
 	"github.com/jmoiron/sqlx"
 	_ "github.com/mattn/go-sqlite3"
+	"github.com/rs/cors"
 )
 
 func main() {
 	db := sqlx.MustConnect("sqlite3", "../test.db")
+	mux := http.NewServeMux()
 
 	// db.MustExec(`CREATE TABLE "Pubs" (
 	// 	"ID"		INTEGER NOT NULL,
@@ -26,8 +29,13 @@ func main() {
 
 	pubService := service.NewService(db)
 
-	http.HandleFunc("/🗺", pubService.AllPubs)
+	mux.HandleFunc("/🗺", pubService.AllPubs)
+	handler := cors.Default().Handler(mux)
+	// http.HandleFunc("/🗺", pubService.AllPubs)
 
 	fmt.Println("Server starting on :8090")
-	http.ListenAndServe(":8090", nil)
+	if err := http.ListenAndServe(":8090", handler); err != nil {
+		log.Fatalf("Server failed: %v", err)
+	}
+
 }
