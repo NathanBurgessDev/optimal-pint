@@ -12,7 +12,10 @@ import (
 )
 
 func main() {
-	db := sqlx.MustConnect("sqlite3", "../test.db")
+	db, err := sqlx.Connect("sqlite3", "../test.db")
+	if err != nil {
+		log.Fatalf("Failed to connect to database: %v", err)
+	}
 	mux := http.NewServeMux()
 
 	// db.MustExec(`CREATE TABLE "Pubs" (
