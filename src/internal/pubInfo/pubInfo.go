@@ -100,3 +100,58 @@ func (s *DB) GetAllDrinks(pubID string) ([]byte, error) {
 	}
 	return jsonData, nil
 }
+
+func (s *DB) GetAllDrinksWithDeals(pubID string) ([]byte, error) {
+	var drinks []Drink
+	err := s.db.Select(&drinks, "SELECT * FROM Drinks WHERE PubID = ? AND HasDeal = 1 and Optimality < 999 ORDER BY Optimality ASC", pubID)
+	if err != nil {
+		err = fmt.Errorf("error selecting drinks with deals: %v", err)
+		return nil, err
+	}
+
+	var drinkJsonList []DrinkJson
+	for _, drink := range drinks {
+		drinkJson := DrinkJson(drink)
+		drinkJsonList = append(drinkJsonList, drinkJson)
+	}
+
+	jsonData, err := json.Marshal(drinkJsonList)
+	if err != nil {
+		err = fmt.Errorf("error marshalling drinks with deals to JSON: %v", err)
+		return nil, err
+	}
+	return jsonData, nil
+}
+
+func (s *DB) GetTopDrinks() ([]byte, error) {
+	var drinks []Drink
+	err := s.db.Select(&drinks, "SELECT * FROM Drinks WHERE Optimality < 999 ORDER BY Optimality ASC")
+	if err != nil {
+		err = fmt.Errorf("error selecting top drinks: %v", err)
+		return nil, err
+	}
+
+	var drinkJsonList []DrinkJson
+	for _, drink := range drinks {
+		drinkJson := DrinkJson(drink)
+		drinkJsonList = append(drinkJsonList, drinkJson)
+	}
+
+	jsonData, err := json.Marshal(drinkJsonList)
+	if err != nil {
+		err = fmt.Errorf("error marshalling top drinks to JSON: %v", err)
+		return nil, err
+	}
+	return jsonData, nil
+}
+
+func (s *DB) GetPubByID(pubID string) (*PubJson, error) {
+	var pub Pub
+	err := s.db.Get(&pub, "SELECT * FROM Pubs WHERE PubID = ?", pubID)
+	if err != nil {
+		err = fmt.Errorf("error selecting pub by ID: %v", err)
+		return nil, err
+	}
+	pubJson := PubJson(pub)
+	return &pubJson, nil
+}

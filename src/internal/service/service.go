@@ -44,3 +44,28 @@ func (s *Service) AllDrinks(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(data)
 }
+
+func (s *Service) AllDrinksWithDeals(w http.ResponseWriter, r *http.Request) {
+	idString := r.PathValue("id")
+	data, err := s.db.GetAllDrinksWithDeals(idString)
+	if err != nil {
+		err = fmt.Errorf("error retrieving drinks with deals: %v", err)
+		log.Fatalf("%v", err.Error())
+		http.Error(w, internalServerStr, http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(data)
+}
+
+func (s *Service) TopDrinks(w http.ResponseWriter, r *http.Request) {
+	data, err := s.db.GetTopDrinks()
+	if err != nil {
+		err = fmt.Errorf("error retrieving top drinks: %v", err)
+		log.Fatalf("%v", err.Error())
+		http.Error(w, internalServerStr, http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(data)
+}
