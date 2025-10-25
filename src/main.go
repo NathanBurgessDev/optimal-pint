@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"net/http"
 	"optimal-pint/src/internal/service"
 
@@ -27,5 +28,6 @@ func main() {
 
 	http.HandleFunc("/getPubs", pubService.AllPubs)
 
+	fmt.Println("Server starting on :8090")
 	http.ListenAndServe(":8090", nil)
 }

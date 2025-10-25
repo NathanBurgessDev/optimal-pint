@@ -28,6 +28,26 @@ type PubJson struct {
 	City      string  `json:"city"`
 }
 
+type Drink struct {
+	ID        int     `db:"ID"`
+	PubID     int     `db:"PubID"`
+	DrinkName string  `db:"DrinkName"`
+	Units     float64 `db:"Units"`
+	Price     float64 `db:"Price"`
+	Amount    int     `db:"Amount"`
+	Category  string  `db:"Category"`
+}
+
+type DrinkJson struct {
+	ID        int     `json:"id"`
+	PubID     int     `json:"pubId"`
+	DrinkName string  `json:"drinkName"`
+	Units     float64 `json:"units"`
+	Price     float64 `json:"price"`
+	Amount    int     `json:"amount"`
+	Category  string  `json:"category"`
+}
+
 func NewDB(db *sqlx.DB) *DB {
 	return &DB{db: db}
 }
