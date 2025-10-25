@@ -25,7 +25,7 @@ func (s *Service) AllPubs(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Failed to retrieve pubs", http.StatusInternalServerError)
 		return
 	}
+	// fmt.Print(data)
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(data)
-
 }
