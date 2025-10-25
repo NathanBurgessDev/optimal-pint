@@ -24,7 +24,9 @@ func main() {
 
 	f := fetcher.New(db)
 
-	http.HandleFunc("/getPubs", service.AllPubs)
+	pubService := service.NewService(db)
+
+	http.HandleFunc("/getPubs", pubService.AllPubs)
 
 	// http.ListenAndServe(":8080", nil)
 }
