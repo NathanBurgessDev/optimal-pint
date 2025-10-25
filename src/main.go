@@ -26,7 +26,7 @@ func main() {
 
 	pubService := service.NewService(db)
 
-	http.HandleFunc("/getPubs", pubService.AllPubs)
+	http.HandleFunc("/tfarndai", pubService.AllPubs)
 
 	fmt.Println("Server starting on :8090")
 	http.ListenAndServe(":8090", nil)
