@@ -1,18 +1,22 @@
 package fetcher
 
 type Address struct {
-	town     string
-	location Location
+	Town     string   `json:"town"`
+	Location Location `json:"location"`
 }
 
 type Location struct {
-	longitude float64
-	latitute  float64
+	Longitude float64 `json:"longitude"`
+	Latitude  float64 `json:"latitude"`
 }
 
 type Venue struct {
-	id       int
-	venueRef int
-	name     string
-	location Address
+	ID       int     `json:"id"`
+	VenueRef int     `json:"venueRef"`
+	Name     string  `json:"name"`
+	Address  Address `json:"address"`
+}
+
+type VenuesResponse struct {
+	Data []Venue `json:"data"`
 }

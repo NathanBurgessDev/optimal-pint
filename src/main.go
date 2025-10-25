@@ -1,8 +1,8 @@
 package main
 
 import (
-	"log"
 	"net/http"
+	"optimal-pint/src/internal/fetcher"
 	"optimal-pint/src/internal/service"
 
 	"github.com/jmoiron/sqlx"
@@ -10,15 +10,21 @@ import (
 )
 
 func main() {
-	db, err := sqlx.Connect("sqlite3", "../Spooninit.db")
-	if err != nil {
-		log.Fatal(err)
-	}
-	defer db.Close()
+	db := sqlx.MustConnect("sqlite3", "test.db")
 
-	service := service.NewService(db)
+	db.MustExec(`CREATE TABLE "Pubs" (
+		"ID"		INTEGER NOT NULL,
+		"PubID" 	INTEGER NOT NULL,
+		"PubName"	TEXT NOT NULL,
+		"Longitude"	REAL NOT NULL,
+		"Latitude"	REAL NOT NULL,
+		"City"		TEXT,
+		PRIMARY KEY("ID" AUTOINCREMENT)
+	);`)
+
+	f := fetcher.New(db)
 
 	http.HandleFunc("/getPubs", service.AllPubs)
 
-	http.ListenAndServe(":8080", nil)
+	// http.ListenAndServe(":8080", nil)
 }
