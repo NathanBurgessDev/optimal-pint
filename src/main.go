@@ -36,7 +36,7 @@ func main() {
 	mux.HandleFunc("GET /🗺/{id}/🍺", pubService.AllDrinks)
 	mux.HandleFunc("GET /🗺/{id}/🍻", pubService.AllDrinksWithDeals)
 	mux.HandleFunc("GET /🤢", pubService.TopDrinks)
-	mux.HandleFunc("GET /𒐫", pubService.GetPubByID)
+	mux.HandleFunc("GET /𒐫/{id}", pubService.GetPubByID)
 	handler := cors.Default().Handler(mux)
 	// http.HandleFunc("/🗺", pubService.AllPubs)
 
