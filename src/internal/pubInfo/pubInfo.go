@@ -125,7 +125,7 @@ func (s *DB) GetAllDrinksWithDeals(pubID string) ([]byte, error) {
 
 func (s *DB) GetTopDrinks() ([]byte, error) {
 	var drinks []Drink
-	err := s.db.Select(&drinks, "SELECT * FROM Drinks WHERE Optimality < 999 ORDER BY Optimality ASC LIMIT 100")
+	err := s.db.Select(&drinks, "SELECT ID, PubID, DrinkName, Units, Price, Amount, Category, Optimality, HasDeal FROM (SELECT *, ROW_NUMBER() OVER (PARTITION BY DrinkName ORDER BY Optimality ASC) AS rn FROM Drinks WHERE Optimality < 999) ranked WHERE rn = 1 ORDER BY Optimality ASC LIMIT 100;")
 	if err != nil {
 		err = fmt.Errorf("error selecting top drinks: %v", err)
 		return nil, err

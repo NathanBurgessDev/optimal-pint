@@ -25,7 +25,7 @@ func (f *Fetcher) Update() error {
 		return err
 	}
 
-	req.Header.Add("Authorization", "Bearer 1|SFS9MMnn5deflq0BMcUTSijwSMBB4mc7NSG2rOhqb2765466")
+	req.Header.Add("Authorization", "Bearer 1|SFS9MMnn5deflq0BMcUTSijwSMBB4mc7NSG2rOhqb2765466") // Fuck you
 
 	venues_res, err := f.client.Do(req)
 
