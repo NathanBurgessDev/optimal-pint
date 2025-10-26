@@ -69,3 +69,16 @@ func (s *Service) TopDrinks(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(data)
 }
+
+func (s *Service) GetPubByID(w http.ResponseWriter, r *http.Request) {
+	idString := r.PathValue("id")
+	data, err := s.db.GetPubByID(idString)
+	if err != nil {
+		err = fmt.Errorf("error retrieving pub by ID: %v", err)
+		log.Fatalf("%v", err.Error())
+		http.Error(w, internalServerStr, http.StatusInternalServerError)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	w.Write(data)
+}

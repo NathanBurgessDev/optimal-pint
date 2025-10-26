@@ -145,7 +145,7 @@ func (s *DB) GetTopDrinks() ([]byte, error) {
 	return jsonData, nil
 }
 
-func (s *DB) GetPubByID(pubID string) (*PubJson, error) {
+func (s *DB) GetPubByID(pubID string) ([]byte, error) {
 	var pub Pub
 	err := s.db.Get(&pub, "SELECT * FROM Pubs WHERE PubID = ?", pubID)
 	if err != nil {
@@ -153,5 +153,10 @@ func (s *DB) GetPubByID(pubID string) (*PubJson, error) {
 		return nil, err
 	}
 	pubJson := PubJson(pub)
-	return &pubJson, nil
+	data, err := json.Marshal(pubJson)
+	if err != nil {
+		err = fmt.Errorf("error marshalling pub to JSON: %v", err)
+		return nil, err
+	}
+	return data, nil
 }
